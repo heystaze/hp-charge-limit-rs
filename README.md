@@ -1,4 +1,5 @@
 # HP Charge Limit — Windows GUI
+> **Disclaimer:** 100% of the GUI wrapper code in this repository was generated with AI assistance. Please review `hp_charge_gui.py` before running it with Administrator privileges or compiling it into an executable.
 
 A zero-dependency Python/Tkinter desktop GUI wrapper for [kralonur/hp-charge-limit-rs](https://github.com/kralonur/hp-charge-limit-rs) on Windows. It provides a visual dashboard and one-click controls for all `hp-charge-limit-rs.exe` CLI commands—monitoring battery telemetry, toggling temporary full-charge bypass, configuring charge thresholds, and managing the Windows background service without typing terminal commands manually.
 
