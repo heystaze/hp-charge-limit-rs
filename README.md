@@ -1,23 +1,38 @@
 # HP Charge Limit — Windows GUI
 
-A zero-dependency Python/Tkinter desktop GUI wrapper for [kralonur/hp-charge-limit-rs](https://github.com/kralonur/hp-charge-limit-rs) on Windows, allowing you to monitor battery status, toggle full-charge bypass, configure charge thresholds, and manage the Windows background service without typing CLI commands.
+A zero-dependency Python/Tkinter desktop GUI wrapper for [kralonur/hp-charge-limit-rs](https://github.com/kralonur/hp-charge-limit-rs) on Windows. It provides a visual dashboard and one-click controls for all `hp-charge-limit-rs.exe` CLI commands—monitoring battery telemetry, toggling temporary full-charge bypass, configuring charge thresholds, and managing the Windows background service without typing terminal commands manually.
 
 ## Features
-- **Live Status Dashboard:** Visual charge progress bar, AC/battery telemetry, firmware charge mode, bypass state, and Windows service status.
-- **Bypass & Single-Shot Firmware Control:** Toggle `bypass on` / `bypass off` or apply a single `set` charge mode.
-- **Validated Limiter Parameters:** Configure `--stop`, `--start`, `--interval`, `--run-mode`, `--off-mode`, `--off-min`, and `--stop-mode` with threshold validation (`start < stop`) and live flag preview.
-- **Windows Service & Foreground Daemon Controls:** Install/reconfigure, uninstall, start, stop, or restart the `hp-charge-limit-rs` service, or run a foreground daemon with active-service conflict detection.
-- **Dark / Light Mode & Persistent Settings:** Custom theme toggle switch and manual save (`gui_config.json`) for your executable path and parameters.
+- **Live Status Dashboard:** Visual battery charge progress bar alongside real-time AC adapter state, battery capacity/voltage, cycle count & health, bypass status, firmware charge mode (`inhibit`, `hold`, `auto`), Windows service status, and last off-state summary (`status` & `diagnose`).
+- **Bypass & Single-Shot Firmware Control:** Enable or disable temporary full-charge bypass (`bypass on` / `bypass off`) or apply a one-time firmware mode (`set <MODE>`).
+- **Validated Limiter Parameters:** Configure `--stop`, `--start`, `--interval`, `--run-mode`, `--off-mode`, `--off-min`, and `--stop-mode` with built-in threshold validation (`start < stop`), live CLI flag preview, and one-click service reconfiguration.
+- **Windows Service & Foreground Daemon Management:** Install/reconfigure (`service install`), uninstall (`service uninstall`), start, stop, or restart the `hp-charge-limit-rs` Windows service, or run a foreground `daemon` with automatic conflict detection if the background service is already active.
+- **Dark / Light Mode & Persistent Settings:** Custom pill-shaped theme toggle switch (with native Windows dark title bar support) and manual configuration saving (`gui_config.json`) for your executable path, theme preference, and limiter parameters.
+- **Live Embedded Console:** Displays the exact CLI commands executed in the background along with real-time `stdout`/`stderr` output.
 
-## Quick Start
+## Prerequisites
+1. Download the official Windows CLI binary (`hp-charge-limit-rs.exe`) from [kralonur/hp-charge-limit-rs/releases](https://github.com/kralonur/hp-charge-limit-rs/releases).
+2. The GUI automatically checks the current folder and `C:\Program Files\hp-charge-limit-rs\hp-charge-limit-rs.exe` on startup, or you can point to any location via **Browse...** and click **Save Settings**.
 
-1. Download the latest Windows release (`hp-charge-limit-rs.exe`) from [kralonur/hp-charge-limit-rs/releases](https://github.com/kralonur/hp-charge-limit-rs/releases).
-2. Download `HPChargeLimitGUI.exe` from this repository's **Releases** page (or run `python hp_charge_gui.py` with Python 3).
-3. Place both `.exe` files in the same folder (or click **Browse...** in the app to select `hp-charge-limit-rs.exe` and click **Save Settings**).
-4. Click **Restart as Admin** when installing/reconfiguring the Windows service or reading protected WMI firmware states.
+## Option 1: Run Directly from Source (Recommended)
+You can inspect `hp_charge_gui.py` directly and run it with standard Python 3—no external `pip` packages are required:
 
-## Build Standalone `.exe` from Source
+```powershell
+python hp_charge_gui.py
+```
+
+*(If launched without Administrator privileges, click **Restart as Admin** in the top bar before running `service` or `set` commands.)*
+
+## Option 2: Build Your Own Standalone `.exe`
+If you prefer a standalone executable without relying on pre-built binaries, compile `hp_charge_gui.py` yourself using PyInstaller:
 
 ```powershell
 pip install pyinstaller
-pyinstaller --onefile --windowed --uac-admin --name "HPChargeLimitGUI" hp_charge_gui.py
+python -m PyInstaller --onefile --windowed --uac-admin --name "HPChargeLimitGUI" hp_charge_gui.py
+```
+
+Once complete, run `dist\HPChargeLimitGUI.exe` from any location, select your `hp-charge-limit-rs.exe` path via **Browse...** if needed, and click **Save Settings**.
+
+## Credits & License
+- Core HP WMI battery charge limiter CLI by [kralonur/hp-charge-limit-rs](https://github.com/kralonur/hp-charge-limit-rs).
+- Licensed under either of [Apache License, Version 2.0](LICENSE-APACHE) or [MIT License](LICENSE-MIT).
